@@ -61,7 +61,7 @@ Optional: set a custom domain in the Vercel project settings.
 ## Resume / CV
 
 - **View resume:** `resume.html` (browser + print).
-- **Download CV:** `assets/thomas-theissier-cv.pdf` — replace this file with your real PDF (same name) when ready.
+- **Download CV:** `assets/thomas-theissier-cv.pdf`
 
 ## Customize home
 
