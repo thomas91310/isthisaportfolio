@@ -10,6 +10,74 @@
     return value === DAY || value === NIGHT ? value : null;
   }
 
+  /* Spoken word per mode. Resolved against this script's own URL because pages
+     sit at two directory depths, so a page-relative path would miss in
+     writing/. */
+  var CLIPS = (function () {
+    try {
+      var src = document.currentScript && document.currentScript.src;
+      return src ? new URL("../audio/", src).href : "assets/audio/";
+    } catch (e) {
+      return "assets/audio/";
+    }
+  })();
+
+  var clips = {};
+
+  function clip(theme) {
+    var name = theme === NIGHT ? "nuit" : "jour";
+    if (!clips[name]) {
+      var el = new Audio();
+      el.preload = "auto";
+      el.volume = 0.7;
+      el.src = CLIPS + name + ".mp3";
+      clips[name] = el;
+    }
+    return clips[name];
+  }
+
+  /* Only ever called from a click, so the autoplay policy is satisfied. Failure
+     to play — no codec, no output device, a policy we didn't anticipate — must
+     never take the theme switch down with it. */
+  function say(theme) {
+    try {
+      var next = clip(theme);
+      var prev = clips[theme === NIGHT ? "jour" : "nuit"];
+      /* Toggling fast shouldn't leave the two words talking over each other. */
+      if (prev && prev !== next) {
+        prev.pause();
+        prev.currentTime = 0;
+      }
+      next.currentTime = 0;
+      var played = next.play();
+      if (played && played.catch) played.catch(function () {});
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  var struckTimer = null;
+
+  /* Marks the word just chosen, so the click reads as landing on it. The class
+     is dropped on a timer rather than animationend, which never fires for
+     readers who asked for reduced motion. */
+  function strike(btn, theme) {
+    clearTimeout(struckTimer);
+    var words = btn.querySelectorAll(".theme-toggle-opt");
+    for (var i = 0; i < words.length; i++) words[i].classList.remove("is-struck");
+
+    var word = btn.querySelector(
+      '.theme-toggle-opt[data-opt="' + (theme === NIGHT ? "night" : "day") + '"]'
+    );
+    if (!word) return;
+    /* Forces a reflow, without which a repeat click never restarts. */
+    void word.offsetWidth;
+    word.classList.add("is-struck");
+    struckTimer = setTimeout(function () {
+      word.classList.remove("is-struck");
+    }, 500);
+  }
+
   /* Records carry the time of the choice: "<theme>|<epoch ms>". Three stores
      are used because none works everywhere — cookies are dead on file://,
      localStorage is blocked there by some browsers, and window.name only
@@ -103,7 +171,12 @@
 
   sync();
 
-  document.addEventListener("DOMContentLoaded", sync);
+  document.addEventListener("DOMContentLoaded", function () {
+    sync();
+    /* Fetch both clips up front so the first click speaks without lag. */
+    clip(DAY);
+    clip(NIGHT);
+  });
 
   /* Back/forward restores the page with whatever attribute it had then. */
   window.addEventListener("pageshow", sync);
@@ -125,5 +198,7 @@
         : NIGHT;
     store({ theme: next, at: Date.now() });
     paint(next);
+    strike(btn, next);
+    say(next);
   });
 })();

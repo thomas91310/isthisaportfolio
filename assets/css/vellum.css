@@ -455,6 +455,30 @@ img {
   color: var(--c-fg-3);
 }
 
+/* The word chosen on click settles into place, with its rule flaring once. */
+@keyframes theme-toggle-strike {
+  0% {
+    transform: translateY(0.13em);
+    text-decoration-color: var(--c-emphasis);
+  }
+  55% {
+    transform: translateY(-0.05em);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.theme-toggle-opt.is-struck {
+  animation: theme-toggle-strike 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle-opt.is-struck {
+    animation: none;
+  }
+}
+
 /* Active state comes from the theme attribute. Day also covers a missing
    attribute, so the control stays legible even if the script never runs. */
 html:not([data-theme="venom"]) .theme-toggle-opt[data-opt="day"],
