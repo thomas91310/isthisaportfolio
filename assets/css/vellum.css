@@ -1,16 +1,6 @@
-/* Vellum portfolio — navy field, warm yellow type, dusty teal accent */
+/* Vellum portfolio — day: navy + warm yellow; night (venom): black + #21FC0D */
 
 :root {
-  --c-bg: #2a3870;
-  --c-bg-alt: #343f80;
-  --c-bg-deep: #1f2858;
-  --c-fg: #e8d85c;
-  --c-fg-2: rgba(232, 216, 92, 0.62);
-  --c-fg-3: rgba(232, 216, 92, 0.32);
-  --c-accent: #3a7878;
-  --c-emphasis: #f5e168;
-  --c-border: rgba(232, 216, 92, 0.2);
-
   --f-display: "Cormorant Garamond", Georgia, serif;
   --f-heading: "Cormorant Garamond", Georgia, serif;
   --f-body: "DM Sans", system-ui, sans-serif;
@@ -35,10 +25,129 @@
 
   --max-prose: 65ch;
   --nav-h: 4.5rem;
+  --theme-bar-h: 2.5rem;
+
+  /* The page field. Shared by body and the sticky chrome so the two paint
+     identically and no panel is visible behind the nav. */
+  --c-field:
+    radial-gradient(ellipse 120% 70% at 18% -8%, var(--c-glow-a), transparent 55%),
+    radial-gradient(ellipse 90% 60% at 100% 108%, var(--c-glow-b), transparent 50%),
+    var(--c-bg);
 
   /* Project gallery tile sizes (px) — JS picks randomly in this range */
   --project-size-min: 120;
   --project-size-max: 280;
+
+  /* Day defaults (overridden by html[data-theme]) */
+  --c-bg: #2a3870;
+  --c-bg-alt: #343f80;
+  --c-bg-deep: #1f2858;
+  --c-fg: #e8d85c;
+  --c-fg-2: rgba(232, 216, 92, 0.62);
+  --c-fg-3: rgba(232, 216, 92, 0.32);
+  --c-accent: #3a7878;
+  --c-emphasis: #f5e168;
+  --c-border: rgba(232, 216, 92, 0.2);
+  --c-overlay-0: rgba(31, 40, 88, 0.18);
+  --c-overlay-1: rgba(31, 40, 88, 0.78);
+  --c-overlay-2: rgba(42, 56, 112, 0.88);
+  --c-overlay-reduced-0: rgba(31, 40, 88, 0.88);
+  --c-overlay-reduced-1: rgba(31, 40, 88, 0.2);
+  --c-surface: rgba(31, 40, 88, 0.55);
+  --c-btn-hover: rgba(31, 40, 88, 0.45);
+  --c-btn-solid: rgba(58, 120, 120, 0.25);
+  --c-glow-a: transparent;
+  --c-glow-b: transparent;
+  --c-rule: var(--c-accent);
+  --c-accent-alt: var(--c-accent);
+  --c-text-gradient: none;
+
+  color-scheme: dark;
+}
+
+/* Day / vellum — specificity beats :root so toggle can win */
+html[data-theme="vellum"] {
+  --c-bg: #2a3870;
+  --c-bg-alt: #343f80;
+  --c-bg-deep: #1f2858;
+  --c-fg: #e8d85c;
+  --c-fg-2: rgba(232, 216, 92, 0.62);
+  --c-fg-3: rgba(232, 216, 92, 0.32);
+  --c-accent: #3a7878;
+  --c-emphasis: #f5e168;
+  --c-border: rgba(232, 216, 92, 0.2);
+  --c-overlay-0: rgba(31, 40, 88, 0.18);
+  --c-overlay-1: rgba(31, 40, 88, 0.78);
+  --c-overlay-2: rgba(42, 56, 112, 0.88);
+  --c-overlay-reduced-0: rgba(31, 40, 88, 0.88);
+  --c-overlay-reduced-1: rgba(31, 40, 88, 0.2);
+  --c-surface: rgba(31, 40, 88, 0.55);
+  --c-btn-hover: rgba(31, 40, 88, 0.45);
+  --c-btn-solid: rgba(58, 120, 120, 0.25);
+  --c-glow-a: transparent;
+  --c-glow-b: transparent;
+  --c-rule: var(--c-accent);
+  --c-accent-alt: var(--c-accent);
+  --c-text-gradient: none;
+}
+
+/* Night / venom — a green-tinted dark field, the way day is a tinted navy
+   rather than white. Every navy tint has a green counterpart here. */
+html[data-theme="venom"] {
+  --c-bg: #0c160d;
+  --c-bg-alt: #142014;
+  --c-bg-deep: #071008;
+  --c-fg: #21fc0d;
+  --c-fg-2: rgba(33, 252, 13, 0.68);
+  --c-fg-3: rgba(33, 252, 13, 0.34);
+  --c-accent: #16c40a;
+  --c-accent-alt: #58e04a;
+  --c-emphasis: #b6ffa8;
+  --c-border: rgba(33, 252, 13, 0.24);
+  --c-overlay-0: rgba(10, 24, 12, 0.2);
+  --c-overlay-1: rgba(6, 15, 7, 0.82);
+  --c-overlay-2: rgba(4, 10, 5, 0.94);
+  --c-overlay-reduced-0: rgba(6, 15, 7, 0.9);
+  --c-overlay-reduced-1: rgba(10, 24, 12, 0.3);
+  --c-surface: rgba(33, 252, 13, 0.07);
+  --c-btn-hover: rgba(33, 252, 13, 0.1);
+  --c-btn-solid: rgba(33, 252, 13, 0.14);
+  --c-glow-a: rgba(33, 252, 13, 0.09);
+  --c-glow-b: rgba(33, 252, 13, 0.05);
+  --c-rule: linear-gradient(90deg, #b6ffa8 0%, #21fc0d 55%, #0f8a06 100%);
+
+  /* A ramp per family of type, so the greens shift across a page instead of
+     every heading sharing one gradient. */
+  --c-text-gradient: linear-gradient(
+    165deg,
+    #b6ffa8 0%,
+    #21fc0d 46%,
+    #12a008 100%
+  );
+  --c-text-gradient-soft: linear-gradient(
+    100deg,
+    #d8ffd0 0%,
+    #6bff58 42%,
+    #21fc0d 100%
+  );
+  --c-text-gradient-mid: linear-gradient(
+    150deg,
+    #7dff6e 0%,
+    #21fc0d 58%,
+    #17b80b 100%
+  );
+  --c-text-gradient-deep: linear-gradient(
+    195deg,
+    #c6ffbb 0%,
+    #35fd23 48%,
+    #16b60b 100%
+  );
+  --c-text-gradient-wide: linear-gradient(
+    90deg,
+    #21fc0d 0%,
+    #b6ffa8 50%,
+    #21fc0d 100%
+  );
 }
 
 *,
@@ -55,12 +164,80 @@ html {
 
 body {
   min-height: 100vh;
-  background: var(--c-bg);
+  background: var(--c-field);
+  background-attachment: fixed;
   color: var(--c-fg);
   font-family: var(--f-body);
   font-size: var(--sz-body);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Night: gradient type. This rule carries the clipping mechanics; the ramp
+   itself is assigned per family below. */
+html[data-theme="venom"] .site-brand,
+html[data-theme="venom"] .display,
+html[data-theme="venom"] .h1,
+html[data-theme="venom"] .h2,
+html[data-theme="venom"] .h3,
+html[data-theme="venom"] .quote-text,
+html[data-theme="venom"] .timeline-title,
+html[data-theme="venom"] .writing-list a,
+html[data-theme="venom"] .project-overlay-title,
+html[data-theme="venom"] .project-caption,
+html[data-theme="venom"] .article-body h2,
+html[data-theme="venom"] .resume-block li strong {
+  background-image: var(--c-text-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* The gradient is painted only inside the box, so at these tight line
+     heights italic descenders (the j in "Projects") get cut. Grow the box,
+     then take the space back so layout is unchanged. */
+  padding: 0.06em 0.09em 0.22em;
+  margin: -0.06em -0.09em -0.22em;
+}
+
+/* Page titles keep the base ramp: pale at the top, deep at the tail. */
+html[data-theme="venom"] .display,
+html[data-theme="venom"] .h1 {
+  background-image: var(--c-text-gradient);
+}
+
+/* Pull quotes read lightest, sweeping left to right. */
+html[data-theme="venom"] .quote-text {
+  background-image: var(--c-text-gradient-soft);
+}
+
+/* Section headings sit in the middle of the range. */
+html[data-theme="venom"] .h2,
+html[data-theme="venom"] .h3,
+html[data-theme="venom"] .article-body h2,
+html[data-theme="venom"] .project-caption {
+  background-image: var(--c-text-gradient-mid);
+}
+
+/* List entries go deeper so they recede behind the headings above them. */
+html[data-theme="venom"] .timeline-title,
+html[data-theme="venom"] .writing-list a,
+html[data-theme="venom"] .resume-block li strong {
+  background-image: var(--c-text-gradient-deep);
+}
+
+/* Small type reads better lit from the middle than top to bottom. */
+html[data-theme="venom"] .site-brand,
+html[data-theme="venom"] .project-overlay-title {
+  background-image: var(--c-text-gradient-wide);
+}
+
+html[data-theme="venom"] .h1 em,
+html[data-theme="venom"] .h2 em,
+html[data-theme="venom"] .display em,
+html[data-theme="venom"] .quote-text em {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: var(--c-emphasis);
 }
 
 a {
@@ -169,7 +346,7 @@ img {
 .rule {
   width: 28px;
   height: 1px;
-  background: var(--c-accent);
+  background: var(--c-rule);
   border: none;
 }
 
@@ -178,7 +355,7 @@ img {
   font-size: var(--sz-pin);
   font-weight: 500;
   line-height: 1.5;
-  color: var(--c-accent);
+  color: var(--c-accent-alt);
   letter-spacing: 0.01em;
 }
 
@@ -201,19 +378,135 @@ img {
 
 /* ── Layout shell ───────────────────────────────────────────────── */
 
-.site-header {
+.site-chrome {
   position: sticky;
   top: 0;
   z-index: 50;
+  /* Same field as the body, anchored the same way, so the bar reads as bare
+     background while still hiding whatever scrolls under it. */
+  background: var(--c-field);
+  background-attachment: fixed;
+}
+
+.site-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--gap-md);
   min-height: var(--nav-h);
   padding: 0 var(--pad-x);
-  background: rgba(42, 56, 112, 0.92);
+  background: transparent;
   border-bottom: 1px solid var(--c-border);
-  backdrop-filter: blur(8px);
+}
+
+.theme-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: var(--theme-bar-h);
+  padding: 0.55rem var(--pad-x) 0.7rem;
+  background: transparent;
+}
+
+/* Type-only control — pin-note voice, no container (vellum) */
+.theme-toggle {
+  appearance: none;
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
+
+.theme-toggle:focus-visible {
+  outline: none;
+}
+
+.theme-toggle-kicker {
+  font-family: var(--f-mono);
+  font-size: var(--sz-label);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+
+.theme-toggle-track {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--f-heading);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.theme-toggle-opt {
+  color: var(--c-fg-2);
+  transition: color 0.25s ease, text-decoration-color 0.25s ease;
+}
+
+.theme-toggle-sep {
+  color: var(--c-fg-3);
+}
+
+/* The word chosen on click settles into place, with its rule flaring once. */
+@keyframes theme-toggle-strike {
+  0% {
+    transform: translateY(0.13em);
+    text-decoration-color: var(--c-emphasis);
+  }
+  55% {
+    transform: translateY(-0.05em);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.theme-toggle-opt.is-struck {
+  animation: theme-toggle-strike 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle-opt.is-struck {
+    animation: none;
+  }
+}
+
+/* Active state comes from the theme attribute. Day also covers a missing
+   attribute, so the control stays legible even if the script never runs. */
+html:not([data-theme="venom"]) .theme-toggle-opt[data-opt="day"],
+html[data-theme="venom"] .theme-toggle-opt[data-opt="night"] {
+  color: var(--c-fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.24em;
+  text-decoration-color: var(--c-accent);
+}
+
+.theme-toggle:hover .theme-toggle-opt,
+.theme-toggle:focus-visible .theme-toggle-opt {
+  color: var(--c-fg-2);
+}
+
+html:not([data-theme="venom"])
+  .theme-toggle:hover
+  .theme-toggle-opt[data-opt="day"],
+html[data-theme="venom"] .theme-toggle:hover .theme-toggle-opt[data-opt="night"],
+html:not([data-theme="venom"])
+  .theme-toggle:focus-visible
+  .theme-toggle-opt[data-opt="day"],
+html[data-theme="venom"]
+  .theme-toggle:focus-visible
+  .theme-toggle-opt[data-opt="night"] {
+  color: var(--c-emphasis);
+  text-decoration-color: var(--c-fg-2);
 }
 
 .site-brand {
@@ -226,6 +519,13 @@ img {
 }
 
 .site-brand:hover {
+  color: var(--c-emphasis);
+}
+
+html[data-theme="venom"] .site-brand:hover {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
   color: var(--c-emphasis);
 }
 
@@ -252,7 +552,7 @@ img {
 
 .site-main {
   position: relative;
-  min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100vh - var(--nav-h) - var(--theme-bar-h));
   padding: var(--pad-y) var(--pad-x) calc(var(--pad-y) + 5.5rem);
 }
 
@@ -285,7 +585,7 @@ img {
 /* ── Page patterns ──────────────────────────────────────────────── */
 
 .page-cover {
-  min-height: calc(100vh - var(--nav-h) - 2 * var(--pad-y));
+  min-height: calc(100vh - var(--nav-h) - var(--theme-bar-h) - 2 * var(--pad-y));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -405,9 +705,9 @@ img {
   text-align: center;
   background: linear-gradient(
     160deg,
-    rgba(31, 40, 88, 0.18) 0%,
-    rgba(31, 40, 88, 0.78) 55%,
-    rgba(42, 56, 112, 0.88) 100%
+    var(--c-overlay-0) 0%,
+    var(--c-overlay-1) 55%,
+    var(--c-overlay-2) 100%
   );
   opacity: 0;
   transform: translateY(10%);
@@ -462,7 +762,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(31, 40, 88, 0.55);
+  background: var(--c-surface);
   border: 1px dashed var(--c-border);
   font-family: var(--f-mono);
   font-size: var(--sz-label);
@@ -509,11 +809,18 @@ img {
   color: var(--c-emphasis);
 }
 
+html[data-theme="venom"] .writing-list a:hover {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: var(--c-emphasis);
+}
+
 .writing-meta {
   font-family: var(--f-mono);
   font-size: var(--sz-label);
   letter-spacing: 0.06em;
-  color: var(--c-accent);
+  color: var(--c-accent-alt);
 }
 
 /* ── Article ────────────────────────────────────────────────────── */
@@ -581,7 +888,7 @@ img {
   font-family: var(--f-mono);
   font-size: var(--sz-label);
   letter-spacing: 0.06em;
-  color: var(--c-accent);
+  color: var(--c-accent-alt);
   padding-top: 0.35em;
 }
 
@@ -637,17 +944,17 @@ img {
 .btn:hover {
   border-color: var(--c-fg-2);
   color: var(--c-emphasis);
-  background: rgba(31, 40, 88, 0.45);
+  background: var(--c-btn-hover);
 }
 
 .btn--solid {
-  background: rgba(58, 120, 120, 0.25);
+  background: var(--c-btn-solid);
   border-color: var(--c-accent);
 }
 
 /* ── Resume print view ──────────────────────────────────────────── */
 
-.resume-page .site-header {
+.resume-page .site-chrome {
   print-color-adjust: exact;
 }
 
@@ -690,7 +997,7 @@ img {
 }
 
 @media print {
-  .site-header,
+  .site-chrome,
   .actions,
   .pin-annotation,
   .no-print {
@@ -730,6 +1037,10 @@ img {
   .site-nav {
     justify-content: flex-start;
     gap: 0.85rem 1.1rem;
+  }
+
+  .theme-bar {
+    justify-content: flex-start;
   }
 
   .timeline-item {
@@ -784,8 +1095,8 @@ img {
     transform: none;
     background: linear-gradient(
       to top,
-      rgba(31, 40, 88, 0.88) 0%,
-      rgba(31, 40, 88, 0.2) 55%,
+      var(--c-overlay-reduced-0) 0%,
+      var(--c-overlay-reduced-1) 55%,
       transparent 100%
     );
     justify-content: flex-end;

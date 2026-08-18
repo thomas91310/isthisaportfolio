@@ -1,4 +1,7 @@
 (() => {
+  /* Theme switching lives inline in each page's <head> so it works before
+     this file loads and even if it fails to load. */
+
   const path = (window.location.pathname.replace(/\/+$/, "") || "/").toLowerCase();
   const segment = path.split("/").filter(Boolean).pop() || "index";
 
